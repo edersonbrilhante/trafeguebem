@@ -1,0 +1,228 @@
+body{
+	margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6{
+	margin: 0;
+}
+
+ul{
+	margin: 0;
+	float: left;
+	padding: 0;
+}
+
+button{
+	background: none;
+	border: 1px solid #CCC;
+	color: #333;
+}
+
+li{
+	list-style: none;
+}
+
+/*index*/
+.all{
+}
+
+/*header*/
+.logo{
+	background: url("../img/logo.png") no-repeat #2D2D2D center;
+	width: 350px;
+	float: left;
+	height:50px;						
+}
+/*header*/
+.logoMobile{
+	background: url("../img/logo-curto.png") no-repeat #2D2D2D center;
+	width: 100%;
+	float: left;
+	height:24px;	
+	border-bottom: 1px solid #DDD;					
+}
+
+.logo h1, .logoCurto h1, .logoMobile h1{
+	display: none;
+}
+
+.menu{
+	float: left;
+	height: 24px;
+	background: #F5F5F5;
+	border-bottom: 1px solid #DDD;
+}
+.menu>div:first-child{
+	float: left;
+	margin-left: 6px;
+}
+.menu>div{
+	margin: 2px 0;
+	float: right;
+}
+
+.toSelect{
+	width: 100%;
+	border-bottom: 1px solid #DDD;
+	height: 34px;
+	background: hsl(206, 38%, 52%);
+	float: left;
+}
+.toSelect ul{
+	width: 210px;
+	margin: 0 auto;
+	float: none;
+}
+.toSelect li{
+	float: left;
+	margin: 1px 5px;
+	cursor: pointer;
+}
+
+#btnMarker{
+	background: url("../img/marker.png") no-repeat scroll center center transparent;
+	height: 32px;
+	width: 32px;
+}
+
+#btnAdress{
+	background: url("../img/adress.png") no-repeat scroll center center transparent;
+	height: 32px;
+	width: 32px;
+}
+
+#btnLine{
+	background: url("../img/line.png") no-repeat scroll center center transparent;
+	height: 32px;
+	width: 32px;
+}
+
+#btnResult{
+	background: url("../img/result.png") no-repeat scroll center center transparent;
+	height: 32px;
+	width: 32px;	
+}
+
+#btnBack{
+	background: url("../img/map.png") no-repeat scroll center center transparent;
+	height: 32px;
+	width: 32px;
+}
+
+.options p{
+	font-size: 1.3em;
+	margin: 3px 0;
+	padding: 0 5px;
+	float: left;
+	clear: left;
+}
+
+.options p label{
+	width: 100px;
+	float: left;
+	color: #FFF;
+}
+
+.options p input{
+	width: 212px;
+	float: left;
+}
+
+.options .info{
+	height: 93px;
+}
+
+.result, .search{
+	background: hsla(0, 0%, 0%, 0.8);
+	height: 100%;
+	overflow-y: auto;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+#tableLinhas{
+	border-collapse: collapse;
+	margin: 27px 10%;
+    width: 79%;
+}
+
+.result p{
+	color: #FFF;
+}
+
+.result td{				
+	border: 1px solid #EEE;
+	padding: 10px;
+}
+
+.result .line{
+	cursor: pointer;
+}
+
+.result .selected{
+	font-weight: bold;
+}
+
+.result span{
+	font-size: 1.1em;
+	color: #FFF;
+}
+
+.map{
+  	float: right;
+}
+
+#map{	
+	width: 100px;
+	height: 100px;			
+}
+
+.horarios{
+	width: 100%;
+}
+
+#hora{
+	background: none repeat scroll 0 0 #FFFFFF;
+    float: left;
+    height: 233px;
+    overflow-y: auto;
+    padding: 0;
+    width: 549px;
+    display: none;
+}
+
+#hora h6{
+	float: left;
+	font-size: 12px;
+	margin: 10px 4px;
+	width: 193px;
+}
+
+#hora ul {
+    border-left: 1px solid #333333;
+    border-top: 1px solid #333333;
+    float: left;
+    margin: 0 17px;
+    padding: 0;
+    width: 180px
+   }
+
+#hora li{
+	border-bottom: 1px solid #333333;
+	border-right: 1px solid #333333;
+	text-align: center;
+	color: #333333;
+	float: left;
+	list-style: none outside none;
+	padding: 5px 0;
+	width: 59px;
+}
+
+#nome{
+	display: none;
+}
+
+#share > input{
+	width: 100%;
+}
