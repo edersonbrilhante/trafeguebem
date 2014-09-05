@@ -1,4 +1,3 @@
-
 var page;
 
 var heightTotal;
@@ -11,22 +10,27 @@ $(document).ready(function () {
 		page.insertNode(event.latLng); 
 	});
 
+	//page.editLine(1931);
+
 	$('button:eq(0)')
 		.button()
 		.click(function(){
-			$('#formulario').dialog();
+			$('#formulario').dialog({
+				title:'Nova Linha'
+			});
 		});
 
-	$('[name="btnSalvar"]')
+	if(typeof $.getUrlVar('id') != 'undefined'){
+		page.editLine($.getUrlVar('id'))
+	}
+
+	$('#btnSalvar')
 		.button()
 		.click(function(){
-			link = $(window.location).attr('href').split('/');
-			code = link[link.length-1];
-			if(typeof code == 'number')
-				page.edit(code);
-			else
-				page.insert();
+			page.insert();
 		});
+
+	$('#restrito').buttonset();
 		
 	if(self.innerHeight)
 		heightTotal = window.innerHeight

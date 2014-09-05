@@ -67,6 +67,11 @@ Page = function() {
 			browserSupportFlag = false;
 			page.handleNoGeolocation(browserSupportFlag);
 		}
+		
+
+		google.maps.event.addListener(this.map, 'zoom_changed', function() {
+	       	console.log('zoom')
+	    });
 	};
 
 	//Não existe GeoLocation
@@ -348,21 +353,22 @@ Page = function() {
 
 
 	this.getLine = function(code){
-		var url = HOST+'/linha/'+code;
+		var url = '/getLinha/'+code;
 		instMap = this;
 		$.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
-			jsonpCallback: 'linha',
-			contentType: "application/json",
-			dataType: 'jsonp',
-			cache: false,
+			dataType: 'json',
 	    	success: function(json) {
-				instMap.cacheJson[json.key] = json.geom;
-				$('.horario').attr('data-name',json.code+' - '+json.name);
-				instMap.showLine(json.key,false);
-				instMap.map.setZoom(ZOOM_MIN);
+	    		if(typeof json.geom != 'undefined'){
+					instMap.cacheJson[json.key] = json.geom;
+					$('.horario').attr('data-name',json.code+' - '+json.name);
+					instMap.showLine(json.key,false);
+					instMap.map.setZoom(ZOOM_MIN);
+				}
+				else{					
+					location.href = window.location.href.replace(/linha.*/,'');
+				}
 	    	}
 		});    
 
@@ -386,6 +392,7 @@ Page = function() {
 		var attributes = new Array();
 
 		json.term = (typeof term != 'undefined')?term:null;
+		json.empresa = $('[name=hdnEmpresa]').val();
 		json.coord = new Object;
 		json.type= new Object;
 		json.type.l = this.typeSearch['l'];
@@ -396,17 +403,13 @@ Page = function() {
 		var JSONstring = $.toJSON(json);
 		var instMap = this;
 
-		var url = HOST+'/busca';
+		var url = '/busca';
 
 		this.searchInProgress = $.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
 			data:{json:JSONstring},
-			jsonpCallback: 'busca',
-			contentType: "application/json",
-			dataType: 'jsonp',
-			cache: false,
+			dataType: 'json',
 	    	success: function(json) {
 
 				if (instMap.isSearching) {
@@ -435,7 +438,7 @@ Page = function() {
 							instMap.cacheJson[json.bus[i].key] = json.bus[i].geom;
 							html += '<tr class="line" data-linha="'+json.bus[i].key+'">'+
 							'<td class="codigos onibus">'+
-								'<span>'+json.bus[i].code+'</span>'+
+								'<span>'+json.bus[i].code+' - '+json.bus[i].way+'</span>'+
 							'</td>'+
 							'<td class="linhas">'+
 								'<span>'+json.bus[i].name+'</span>'+
@@ -450,7 +453,7 @@ Page = function() {
 							instMap.cacheJson[json.lotacao[i].key] = json.lotacao[i].geom;
 							html += '<tr class="line" data-linha="'+json.lotacao[i].key+'">'+
 							'<td class="codigos lotacao">'+
-								'<span>'+json.lotacao[i].code+'</span>'+
+								'<span>'+json.lotacao[i].code+' - '+json.lotacao[i].way+'</span>'+
 							'</td>'+
 							'<td class="linhas">'+
 								'<span>'+json.lotacao[i].name+'</span>'+
@@ -510,6 +513,9 @@ Page = function() {
 	//Mostra Linha
 	this.showLine = function (lineKey,hideStop) {
 		var instMap = this;
+
+		page.map.setCenter(new google.maps.LatLng(instMap.cacheJson[lineKey][0].lat, instMap.cacheJson[lineKey][0].lng));
+
 		if($('[data-linha=' + lineKey + ']').hasClass("selected"))
 		{
 			//instMap.hideStopsLines(lineKey);
@@ -526,11 +532,15 @@ Page = function() {
 				instMap.lineAnimationStep(pl, instMap.cacheJson[lineKey], 0, lineKey)()
 			} else {
 
+				var latlngbounds = new google.maps.LatLngBounds();
 				var path = pl.getPath();
 				for (var i = 0; i < instMap.cacheJson[lineKey].length; i++) {
-					path.push(new google.maps.LatLng(instMap.cacheJson[lineKey][i].lat, instMap.cacheJson[lineKey][i].lng))
+					var coordinate = new google.maps.LatLng(instMap.cacheJson[lineKey][i].lat, instMap.cacheJson[lineKey][i].lng);
+					path.push(coordinate)
 					instMap.lines[lineKey].push(pl);
+					latlngbounds.extend(coordinate);
 				}
+   				page.map.fitBounds(latlngbounds);
 			}
 
 			instMap.linesKeys.push({
@@ -650,16 +660,12 @@ Page = function() {
 	
 	//Mostra horario
 	this.showHour = function(lineKey,title){
-		var url = HOST+'/horario/'+lineKey;
+		var url = '/horario/'+lineKey;
 
 		$.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
-			jsonpCallback: 'busca',
-			contentType: "application/json",
-			dataType: 'jsonp',
-			cache: false,
+			dataType: 'json',
 			success : function (json2) {
 				var html = '';
 				ts = (typeof(json2.util) == 'undefined')?0:json2.util.length;

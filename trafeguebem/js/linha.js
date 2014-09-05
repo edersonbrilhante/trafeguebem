@@ -5,7 +5,7 @@ var widthTotal;
 $(document).ready(function () {  
 
 	link = $(window.location).attr('href').split('/');
-	code = link[link.length-1];
+	code = $('#hdnId').val();
 
 	page = new Page();
 	page.initialize();	
@@ -34,7 +34,7 @@ $(document).ready(function () {
 	else if(document.body)
 		widthTotal = document.body.clientWidth;
 
-	$('.menu').css('width',widthTotal-134);
+	$('.menu').css('width',widthTotal-$('#logo').width());
 	$('#map').css('width',widthTotal);
 	$('#map').css('height',heightTotal-25);	
 

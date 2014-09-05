@@ -1,5 +1,5 @@
 <head> 
-	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/> 
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
 	<meta name="google-site-verification" content="FaQgFYJqkn8MLCK2_Oc9_cyHUjbPzyviVg_7RsR91bc" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="keywords" content="Linha de ônibus, rotas, turismo, endereço, mapa, ônibus, lotação, paradas, taxi, transporte urbano, transporte Porto Alegre" />
@@ -11,6 +11,7 @@
 
 
 	<link rel="stylesheet" type="text/css" href="/css/redmond/jquery-ui-1.9.1.custom.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui-timepicker-addon.css">
 	<link rel="stylesheet" type="text/css" href="/css/geral.css">
-	<link rel="stylesheet" type="text/css" href="/css/screen.mobile.css">
+	<link rel="stylesheet" type="text/css" href="/css/screen.css">
 </head>

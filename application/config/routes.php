@@ -41,9 +41,60 @@
 $route['default_controller'] = "home";
 $route['404_override'] = '';
 
-$route['linha/(:num)'] = "home/linha/$1";
+$route['adm/linha/restrito/(:num)'] = "home/restrito/$1";//
+$route['linha/(:num)'] = "home/linha/$1";//
+$route['horario/(:num)'] = "busca/getHour/$1";
+$route['getLinha/(:num)'] = "busca/getLinha/$1";
+
+$route['busca'] = "busca/index";
+$route['busca/lista'] = "busca/lista";
+
 $route['linha'] = "home";
 $route['mobile'] = "home/mobile";
+$route['horario/(:num)'] = "busca/getHour/$1";
+$route['linha2/(:num)'] = "busca/getLinha/$1";
+
+$route['deletar/linha'] = "linha/deletar";
+$route['novo'] = "linha/cadastro";
+$route['novo/horario'] = "linha/horarios";
+$route['insert/horario'] = "linha/salvarHorario";
+$route['insert'] = "linha/salvar";
+$route['linhas'] = "linha/linhas";
+
+$route['login'] = 'home/login';
+$route['logon'] = 'home/logon';
+$route['logoff'] = 'home/logoff';
+
+$route['(:any)/linha/(:any)/(:num)'] = "home/linha/$2/$1/$3";
+$route['(:any)'] = "home/index/$1";
+
+
+$route['adm'] = "home/adm";
+//linha
+$route['adm/linha/lista'] = "linha/lista";
+
+//usuario
+$route['adm/usuario'] = "usuario/index";
+$route['adm/usuario/lista'] = "usuario/lista";
+$route['adm/usuario/cadastrar'] = "usuario/cadastrar";
+$route['adm/usuario/deletar'] = "usuario/deletar";
+//empresa
+$route['adm/empresa'] = "empresa/index";
+$route['adm/empresa/lista'] = "empresa/lista";
+$route['adm/empresa/cadastrar'] = "empresa/cadastrar";
+$route['adm/empresa/deletar'] = "empresa/deletar";
+//cidade
+$route['adm/cidade'] = "cidade/index";
+$route['adm/cidade/lista'] = "cidade/lista";
+$route['adm/cidade/cadastrar'] = "cidade/cadastrar";
+$route['adm/cidade/deletar'] = "cidade/deletar";
+//linha
+$route['adm/linha'] = "linha/linhas";
+$route['adm/linha/novo'] = "linha/cadastro";
+$route['adm/linha/cadastrar'] = "linha/cadastrar";
+$route['adm/linha/deletar'] = "linha/deletar";
+$route['adm/linha/horario'] = "linha/	";
+$route['adm/linha/horario/cadastrar'] = "linha/salvarHorario";
 
 
 /* End of file routes.php */

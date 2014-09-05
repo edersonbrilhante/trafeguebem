@@ -317,7 +317,7 @@ Page = function() {
 
 
 	this.getLine = function(code){
-		var url = HOST+'/linha/'+code;
+		var url = 'http://trafeguemelhor.com.br/linha/'+code;
 		instMap = this;
 		$.ajax({
 			type: 'GET',
@@ -365,7 +365,7 @@ Page = function() {
 		var JSONstring = $.toJSON(json);
 		var instMap = this;
 
-		var url = HOST+'/busca';
+		var url = 'http://trafeguemelhor.com.br/busca';
 
 		this.searchInProgress = $.ajax({
 			type: 'GET',
@@ -618,7 +618,7 @@ Page = function() {
 	
 	//Mostra horario
 	this.showHour = function(lineKey,title){
-		var url = HOST+'/horario/'+lineKey;
+		var url = 'http://trafeguemelhor.com.br/horario/'+lineKey;
 
 		$.ajax({
 			type: 'GET',

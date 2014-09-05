@@ -27,7 +27,49 @@ li{
 .all{
 }
 
+.loading{
+	background: url(/icon/loading.gif) no-repeat center;
+	margin: 10px auto;
+	width: 20px;
+	height: 20px;
+	display: block;
+}
+
+
 /*header*/
+#topo {
+    background: none repeat scroll 0 0 #EAF4FD;
+    border-bottom: 1px solid #CCCCCC;
+    float: left;
+    width: 100%;
+}
+
+#topo a {
+    color: #578BB3;
+    float: right;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 3px 0;
+}
+#topo a:hover{
+	text-decoration: underline;
+}
+
+#logo{
+	float: left;
+}
+.logoEmpresa8{
+	background: url("../img/company/8.jpg") no-repeat #2D2D2D center;		
+	width: 134px;
+	float: left;
+	height:26px;	
+}
+.logoEmpresa{
+	background: url("../img/logo-curto.png") no-repeat #2D2D2D center;	
+	width: 136px;
+	float: left;
+	height:26px;	
+}
 .logo{
 	background: url("../img/logo.png") no-repeat #2D2D2D center;
 	width: 350px;
@@ -43,7 +85,7 @@ li{
 	border-bottom: 1px solid #DDD;					
 }
 
-.logo h1, .logoCurto h1{
+.logo h1, .logoCurto h1, .logoEmpresa8 h1, .logoEmpresa h1{
 	display: none;
 }
 
@@ -97,13 +139,17 @@ li{
 }
 
 .options .info{
-	height: 93px;
+	height: 106px;
 }
 
 .result{
 	overflow-y:auto;
 	width: 100%;
 	border: 1px solid #DDD;
+}
+
+#tbSearchResult{
+	border-collapse: collapse;
 }
 
 #tableLinhas{
@@ -183,4 +229,316 @@ li{
 
 #share > input{
 	width: 100%;
+}
+
+body.adm{
+	overflow: auto;
+}
+#linhas, #horario{
+	float: left;
+	clear: left;
+	margin: 10px;	
+	margin-top: 0;
+}
+#linhas table, #horario table{
+	border-collapse: collapse;
+}
+#linhas th, #linhas th *, #horario th, #horario th *{
+	color: #666;
+}
+#linhas th, #linhas td, #horario th, #horario td{
+	border:1px solid #CCC;
+	padding: 2px 5px;
+	font-size: 12px;
+}
+#horario th, #horario td{
+	text-align: center;
+}
+#horario input{
+	width: 40px
+}
+#horario .novo{
+	cursor: pointer;
+	background: url('/img/adicionar.png') no-repeat center;
+	display: block;
+	float: left;
+	width: 15px;
+	height: 15px;
+}
+#horario .excluir{
+	cursor: pointer;
+	background: url('/img/excluir.gif') no-repeat center;
+	display: block;
+	float: left;
+	width: 15px;
+	height: 15px;
+}
+#linhas .editar{
+	cursor: pointer;
+	background: url('/img/editar.gif') no-repeat center;
+}
+#linhas .excluir{
+	cursor: pointer;
+	background: url('/img/excluir.gif') no-repeat center;
+}
+#linhas .horario{
+	cursor: pointer;
+	background: url('/img/info.gif') no-repeat center;
+}
+#linhas .clonar{
+	cursor: pointer;
+	background: url('/img/clonar.gif') no-repeat center;
+}
+#linhas td, #horario td {
+    color: #666666;
+}
+#linhas tr:hover, #horario tr:hover{
+	background: #ddd
+}
+#formulario label{
+	width: 100px;
+	float: left;
+	font-size: 12px
+}
+#formulario #restrito label {
+    width: 47px;
+}
+#formulario p{
+	float: left;
+	margin: 5px 0;
+	clear: left;
+}
+#formulario input, #formulario select{
+	font-size: 12px;
+	float: left;
+	height: 20px
+}
+.button{
+	float: left;
+	clear: left;
+	margin: 10px;
+}
+
+#tamanho{
+	float: left;
+}
+
+#login {
+    border: 1px solid #CCCCCC;
+    clear: left;
+    float: left;
+    margin: 10px;
+    padding: 10px;
+}
+
+#login input{
+	border: 1px solid #CCCCCC;
+}
+
+.divTabs {
+	width: calc(100% - 2px - 0.4em);
+	display: block;
+	clear: left;
+	float: left;
+	min-height: 350px;
+}
+
+.divTabs .ui-tabs-nav{
+	width: inherit;
+}
+
+form h3 {
+	float: left;
+	font-size: 1.1em;
+	font-weight: bold;
+	width: 100%;
+	text-align: left;
+	margin: 0 0 10px;
+}
+
+.ui-sortable {
+	float: left;
+	margin: 0;
+	min-height: 40px;
+	width: 100%;
+}
+
+.ui-sortable li {
+	font-size: 1.2em;
+	padding: 5px;
+	text-align: left;
+}
+
+form{
+	float: left;
+	width: calc(100% - 20px);
+	margin: 10px;
+}
+
+form p {
+	float: left;
+	clear: left;
+}
+
+form p label {
+	width: 100px;
+	text-align: left;
+	font-size: 1.2em;
+	font-weight: normal;
+	float: left;
+}
+
+form input[type="text"], form input[type="password"] , form select {
+	height: 24px;
+	font-size: 1.2em;
+}
+
+form .pesquisa{
+	width: 100%;
+}
+
+form .pesquisa label{
+	float: left;
+	margin: 8px;
+	width: 5em;
+}
+
+form .pesquisa input{
+	float: left;
+	margin: 5px;
+	width: calc(100% - 5em - 26px);
+}
+
+.botoes{
+	clear: left;
+	float: left;
+	margin: 10px 0;
+}
+
+.reticencia {
+	height: 12px;
+	left: -30px;
+	padding: 5px 0;
+	top: 1px;
+	width: 26px;
+}
+
+ul.block {
+	clear: left;
+	float: left;
+	margin: 10px 0 0;
+	background: #FFF;
+	width: 100%;
+}
+
+.block li {
+	float: left;
+	margin: 10px;
+}
+
+.btn {
+	background: #eeeeee;
+	background: -moz-linear-gradient(top, #eeeeee 0%, #ffffff 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#ffffff));
+	background: -webkit-linear-gradient(top, #eeeeee 0%,#ffffff 100%);
+	background: -o-linear-gradient(top, #eeeeee 0%,#ffffff 100%);
+	background: -ms-linear-gradient(top, #eeeeee 0%,#ffffff 100%);
+	background: linear-gradient(to bottom, #eeeeee 0%,#ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 );
+	border: 1px solid #DDDDDD;
+	border-radius: 10px 10px 10px 10px;
+	box-shadow: 3px 4px 3px #999999;
+	display: table-cell;
+	vertical-align: middle;
+	width: 128px;
+}
+
+.btn a {
+	float: left;
+	font-size: 1.3em;
+	height: 94px;
+	padding: 9px 0;
+	text-align: center;
+	width: 100%;
+}
+
+.btn-img {
+	float: left;
+	height: 64px;
+	margin: 0 32px;
+	width: 64px;
+}
+
+#navegacao {
+	float: left;
+	clear: left;
+	width: 100%;
+	border-bottom: 1px solid #3594E9;
+	background: #3594E9;
+}
+
+#navegacao ul {
+	display: inline;
+	float: left;
+	margin: 0 0 0 10px;
+}
+
+#navegacao li {
+	display: block;
+	float: left;
+	padding-right: 10px;
+	text-transform: capitalize;
+	width: auto;
+}
+
+#navegacao span, #navegacao label {
+	color: #FFFFFF;
+	float: left;
+	line-height: 27px;
+	margin-right: 2px;
+}
+
+#navegacao a {
+	color: #FFFFFF;
+	font-size: 1.4em;
+	line-height: 27px;
+}
+
+#navegacao b {
+	color: #FFFFFF;
+	font-size: 1.4em;
+	line-height: 27px;
+}
+
+#divSearch > div {
+	float: left;
+	margin: 0 0 10px;
+	width: 100%;
+}
+
+#search {
+	float: left;
+	font-size: 1.2em;
+	height: 24px;
+	margin: 0 10px 0 0;
+}
+
+#formSearch button {
+	float: left;
+	margin: 0;
+	clear: none;
+}
+
+#tbSearchResult th {
+	background: none repeat scroll 0 0 #DDDDDD;
+	text-align: center;
+	padding: 5px 0;
+	border: 1px solid #CCC;
+	vertical-align: middle;
+}
+#tbSearchResult td {
+	text-align: left;
+	padding: 5px 4px;
+	border: 1px solid #CCC;
+	vertical-align: middle;
 }

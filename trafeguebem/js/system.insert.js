@@ -54,18 +54,20 @@ Page = function() {
 		var instMap = this;
 		
 		var browserSupportFlag =  new Boolean();
-		if(navigator.geolocation) {
-			browserSupportFlag = true;
-			navigator.geolocation.getCurrentPosition(function(position) {
-				page.initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-				page.map.setCenter(page.initialLocation);
-			}, function() {
-			  page.handleNoGeolocation(browserSupportFlag);
-			});
-		} else {
-			// Browser doesn't support Geolocation
-			browserSupportFlag = false;
-			page.handleNoGeolocation(browserSupportFlag);
+		if(typeof $.getUrlVar('id') == 'undefined'){
+			if(navigator.geolocation) {
+				browserSupportFlag = true;
+				navigator.geolocation.getCurrentPosition(function(position) {
+					page.initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+					page.map.setCenter(page.initialLocation);
+				}, function() {
+				  page.handleNoGeolocation(browserSupportFlag);
+				});
+			} else {
+				// Browser doesn't support Geolocation
+				browserSupportFlag = false;
+				page.handleNoGeolocation(browserSupportFlag);
+			}
 		}
 	};
 
@@ -348,21 +350,17 @@ Page = function() {
 
 
 	this.getLine = function(code){
-		var url = HOST+'/linha/'+code;
+		var url = '/getLinha/'+code;
 		instMap = this;
 		$.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
-			jsonpCallback: 'linha',
-			contentType: "application/json",
-			dataType: 'jsonp',
-			cache: false,
+			dataType: 'json',
 	    	success: function(json) {
 				instMap.cacheJson[json.key] = json.geom;
 				$('.horario').attr('data-name',json.code+' - '+json.name);
-				instMap.showLine(json.key,false);
 				instMap.map.setZoom(ZOOM_MIN);
+				instMap.showLine(json.key,false);
 	    	}
 		});    
 
@@ -396,16 +394,13 @@ Page = function() {
 		var JSONstring = $.toJSON(json);
 		var instMap = this;
 
-		var url = HOST+'/busca';
+		var url = '/busca';
 
 		this.searchInProgress = $.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
 			data:{json:JSONstring},
-			jsonpCallback: 'busca',
-			contentType: "application/json",
-			dataType: 'jsonp',
+			dataType: 'json',
 			cache: false,
 	    	success: function(json) {
 
@@ -510,6 +505,8 @@ Page = function() {
 	//Mostra Linha
 	this.showLine = function (lineKey,hideStop) {
 		var instMap = this;
+
+		page.map.setCenter(new google.maps.LatLng(instMap.cacheJson[lineKey][0].lat, instMap.cacheJson[lineKey][0].lng));
 		if($('[data-linha=' + lineKey + ']').hasClass("selected"))
 		{
 			//instMap.hideStopsLines(lineKey);
@@ -525,12 +522,15 @@ Page = function() {
 			if (animate) {
 				instMap.lineAnimationStep(pl, instMap.cacheJson[lineKey], 0, lineKey)()
 			} else {
-
+				var latlngbounds = new google.maps.LatLngBounds();
 				var path = pl.getPath();
 				for (var i = 0; i < instMap.cacheJson[lineKey].length; i++) {
-					path.push(new google.maps.LatLng(instMap.cacheJson[lineKey][i].lat, instMap.cacheJson[lineKey][i].lng))
+					var coordinate = new google.maps.LatLng(instMap.cacheJson[lineKey][i].lat, instMap.cacheJson[lineKey][i].lng);
+					path.push(coordinate)
 					instMap.lines[lineKey].push(pl);
+					latlngbounds.extend(coordinate);
 				}
+   				page.map.fitBounds(latlngbounds);
 			}
 
 			instMap.linesKeys.push({
@@ -650,16 +650,12 @@ Page = function() {
 	
 	//Mostra horario
 	this.showHour = function(lineKey,title){
-		var url = HOST+'/horario/'+lineKey;
+		var url = '/horario/'+lineKey;
 
 		$.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
-			jsonpCallback: 'busca',
-			contentType: "application/json",
-			dataType: 'jsonp',
-			cache: false,
+			dataType: 'json',
 			success : function (json2) {
 				var html = '';
 				ts = (typeof(json2.util) == 'undefined')?0:json2.util.length;
@@ -1215,10 +1211,12 @@ Page = function() {
 	
 	//Janela de Informação
 	this.showEditNodeWindow = function (nodeIndex) {
-		var html = "<strong>Opções (Nodo #" + (nodeIndex + 1) + ")</strong><br/>";
-		html += "- <a href='javascript:page.duplicateNode(" + nodeIndex + ");'>Duplicar Nodo</a><br/>";
-		html += "- <a href='javascript:page.removeNode(" + nodeIndex + ");'>Remover Nodo</a>";
-		html += "- <a href='#'>Adicionar Horario</a>";
+		var html = "<div style='float:left;width:110px;height:60px'>"+
+				"<strong>Op&ccedil;&otilde;es (Nodo #" + (nodeIndex + 1) + ")</strong><br/>"+
+				"- <a href='javascript:page.duplicateNode(" + nodeIndex + ");'>Duplicar Nodo</a><br/>"+
+				"- <a href='javascript:page.removeNode(" + nodeIndex + ");'>Remover Nodo</a>"+
+				"</div>"
+		//html += "- <a href='#'>Adicionar Horario</a>";
 		this.editNodeWindow.setContent(html);
 		this.editNodeWindow.open(this.map, this.insertedNodes[nodeIndex])
 	};
@@ -1236,31 +1234,31 @@ Page = function() {
 			google.maps.event.clearListeners(this.insertedNodes[i], "click");
 			with ({
 				idx : i
-			}) {
-				google.maps.event.addListener(this.insertedNodes[i], "click", function () {
+			}) {			
+				google.maps.event.addListener(this.insertedNodes[i], "rightclick", function () {
 					instance.showEditNodeWindow(idx)
-				})
+				});
 			}
 		}
 	};	
 	
 	//Alterar Linha Editavel
 	this.editLine = function (lineCode){
-		var url = HOST+'/linha/'+lineCode;
+		var url = '/getLinha/'+lineCode;
 		instMap = this;
 		$.ajax({
 			type: 'GET',
 			url: url,
-			async: false,
-			jsonpCallback: 'linha',
-			contentType: "application/json",
-			dataType: 'jsonp',
-			cache: false,
+			dataType: 'json',
 	    	success: function(json) {
 				//page.clearInsertedLine();
+				var latlngbounds = new google.maps.LatLngBounds();
 				for (var i = 0; i < json.geom.length; i++) {
-					page.insertNode(new google.maps.LatLng(json.geom[i].lat, json.geom[i].lng));
+					var coordinate = new google.maps.LatLng(json.geom[i].lat, json.geom[i].lng);
+					latlngbounds.extend(coordinate);
+					page.insertNode(coordinate);
 				}
+   				page.map.fitBounds(latlngbounds);
 			}
 		})	
 		
@@ -1338,73 +1336,69 @@ Page = function() {
 	};
 		
 	//Inserir Dados no Banco
-	this.insert = function () {
+	this.insert = function (type) {
 		var json = new Object;
 		var warningHtml = "";
 		var hasWarning = false;
-		var geom = new Array;
-		for (var i = 0; i < this.insertedNodes.length; i++) {
-			var pos = this.insertedNodes[i].getPosition();
-			geom[i] = pos.lat()+' '+pos.lng();
-		}
-		json.geom = geom.join(',');
-		json.codigo = $('[name="txtCodigo"]').val();
-		json.nome = $('[name="txtNome"]').val();
-		json.tipo =$('[name="selCity"]').val();
-		json.company = $('[name="selCompany"]').val();
-		json.city = $('[name="selCity"]').val();
-		json.way = $('[name="selWay"]').val();
-		this.isInserting = true;
-		var JSONstring = $.toJSON(json);
-		this.waitForInsertion();
-		var instance = this;
+		json.geom = new Array;
 
-		var url = HOST+'/insert/';
-		instMap = this;
-		$.ajax({
-			type: 'POST',
-			url: url,
-			data: json,
-			dataType: 'json',
-	    	success: function(json) {
-				instance.isInserting = false;
-				location.reload(true);
+		for (var i = 0; i < this.insertedNodes.length; i++) 
+		{
+			if(i>0){
+				distance = google.maps.geometry.spherical.computeDistanceBetween (this.insertedNodes[i-1].getPosition(), this.insertedNodes[i].getPosition())
+				if(distance > 200)
+				{
+					n = Math.round(distance/150)
+					oldpos = this.insertedNodes[i-1].getPosition();
+					curpos = this.insertedNodes[i].getPosition();
+					lat = Math.abs(oldpos.lat()) - Math.	abs(curpos.lat());
+					lng = Math.abs(oldpos.lng()) - Math.	abs(curpos.lng());
+					lat = lat/n;
+					lng = lng/n;
+					for(j=1;j<n;j++){
+						a = new google.maps.LatLng(oldpos.lat()+(lat*j),oldpos.lng()+(lng*j));
+						json.geom.push(new Array(a.lat(),a.lng()));
+					}
+				}
 			}
-		})
-	};
-	//update Dados no Banco
-	this.edit = function (id) {
-		var json = new Object;
-		var warningHtml = "";
-		var hasWarning = false;
-		var geom = new Array;
-		for (var i = 0; i < this.insertedNodes.length; i++) {
 			var pos = this.insertedNodes[i].getPosition();
-			geom[i] = pos.lat()+' '+pos.lng();
+			json.geom.push(new Array(pos.lat(),pos.lng()));
+			
 		}
-		json.id = id;
-		json.geom = geom.join(',');
+
+		//for (var i = 0; i < this.insertedNodes.length; i++) {
+		//	var pos = this.insertedNodes[i].getPosition();
+		//	json.geom[i] = new Array;
+		//	json.geom[i][0] = pos.lat();
+		//	json.geom[i][1] = pos.lng()
+		//}
+		json.codigointerno = $('[name="txtCodigoInterno"]').val();
 		json.codigo = $('[name="txtCodigo"]').val();
 		json.nome = $('[name="txtNome"]').val();
 		json.tipo =$('[name="selCity"]').val();
 		json.company = $('[name="selCompany"]').val();
 		json.city = $('[name="selCity"]').val();
 		json.way = $('[name="selWay"]').val();
+		json.tipo = $('[name="selTipo"]').val();
+		json.modalidade = $('[name="selModalidade"]').val();
+		json.restrito = ($('[name="chkRestrito"]').is(':checked'))?'1':'0';
+		json.status = ($('[name="chkStatus"]').is(':checked'))?'1':'2';
+		json.id = $('[name="hdnId"]').val();
+		json.clonar = $('[name="hdnClonar"]').val();
 		this.isInserting = true;
 		var JSONstring = $.toJSON(json);
 		this.waitForInsertion();
 		var instance = this;
-
-		var url = HOST+'/edit/';
+		var url = 'insert';
 		instMap = this;
 		$.ajax({
 			type: 'POST',
 			url: url,
-			data: json,
+			data: {json:JSONstring},
 			dataType: 'json',
 	    	success: function(json) {
 				instance.isInserting = false;
-				location.reload(true);
+				location.replace($.getUrl())
 			}
 		})
 	};

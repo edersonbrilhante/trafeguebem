@@ -10,7 +10,9 @@ var page;
 		mw = 0; // max witdh
 		$('label', this).each(function(index){
 			w = $(this).width();
-			if (w > mw) mw = w; 
+			if (w > mw){
+				mw = w; 
+			} 
 		})
 		$('label', this).each(function(index){
 			$(this).width(mw);
@@ -77,7 +79,7 @@ $(document).ready(function () {
         		linha = $(options.$trigger.context).attr('data-linha');
         		code = $(options.$trigger.context).find('.codigos>span').html();
         		nome = $(options.$trigger.context).find('.linhas>span').html();
-        		$('#share input').attr('value',window.location.href+'linha/'+linha);
+        		$('#share input').attr('value',$.getUrlHost()+'/linha/'+linha);
         		$('#share').dialog({title:code+' - '+nome});
         	}
         },
@@ -118,10 +120,10 @@ $(document).ready(function () {
 
 	//widthTotal = 	widthTotal - 40;
 
-	$('.menu').css('width',widthTotal-$('[class^=logo]').width());
+	$('.menu').css('width',widthTotal-$('#logo').width());
 	$('.toSelect').css('height',heightTotal-37);
-	$('.options').css('height',heightTotal-72);
-	$('.result').css('height',$('.options').height()-$('.search').height()-109);
+	$('.options').css('height',heightTotal-24);
+	$('.result').css('height',$('.options').height()-$('.search').height()-210);
 	$('#map').css('width',widthTotal-400);
 	$('#map').css('height',heightTotal-25);
 
@@ -143,8 +145,8 @@ $(document).ready(function () {
 
 		$('.menu').css('width',widthTotal-350);
 		$('.toSelect').css('height',heightTotal-37);
-		$('.options').css('height',heightTotal-72);
-		$('.result').css('height',$('.options').height()-$('.search').height()-109);
+		$('.options').css('height',heightTotal-24);
+		$('.result').css('height',$('.options').height()-$('.search').height()-210);
 		$('#map').css('width',widthTotal-400);
 		$('#map').css('height',heightTotal-35);
 	});
